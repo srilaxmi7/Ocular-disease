@@ -7,6 +7,7 @@ from PIL import Image
 import os
 import time
 import numpy as np
+import tensorflow as tf
 
 # SETTING PAGE CONFIG TO WIDE MODE
 st.set_page_config(
@@ -14,6 +15,24 @@ st.set_page_config(
     page_title="A-EYE - Detect ocular disease",
     page_icon="👁",
     )
+# Load your trained model
+@st.cache(allow_output_mutation=True)
+def load_model():
+    model = tf.keras.models.load_model('model.py/predict')  # Load your model file
+    return model
+
+
+# Define function to preprocess image
+def preprocess_image(image):
+    # Preprocess your image here (resize, normalize, etc.)
+    return image
+
+# Define function to make predictions
+def predict(image):
+    processed_image = preprocess_image(image)
+    prediction = model.predict(processed_image)
+    return prediction
+
 
 
 ###########################
@@ -139,14 +158,14 @@ st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 # 👇      CODE        👇 #
 ###########################
 
-row1_1, row1_2 = st.beta_columns((2,2))
+row1_1, row1_2 = st.columns((2,2))
 
 prediction = None
 response = None
 
 with row1_1:
 
-    st.image('img/logo-test.png', width=200)
+    st.image('logo-test.png', width=200)
     st.markdown("""
         ##
         """)
@@ -171,8 +190,8 @@ with row1_1:
 
 
     if st.button('🩺 Analyse it'):
-        #url = 'https://odrdockerimagelight0-4rkl6m35oq-ew.a.run.app/predict'
-        url = 'https://odrfinal-4rkl6m35oq-ew.a.run.app/predict'
+        #url = 'model.py/predict'
+        url = 'model.py/predict'
         temp_image = str(int(time.time())) + "_" + 'img.jpg'
         img.save(temp_image)
 
@@ -192,7 +211,7 @@ with row1_2:
             #
             #####
             ''')
-        st.image('img/gif-to-jpeg.jpg')
+        st.image('gif-to-jpeg.jpg')
     # else:
     #     st.markdown('''
     #         #
@@ -204,7 +223,7 @@ with row1_2:
             #
             #####
             ''')
-        st.image('img/bg-img.gif')
+        st.image('bg-img.gif')
         #st.write('Waiting for your upload')
     if response:
         st.markdown('''
@@ -234,7 +253,7 @@ with row1_2:
                 ### Result:
                 #####
                 """)
-            st.image('img/failure.png', width=50)
+            st.image('failure.png', width=50)
             st.write('**Oopsi**...')
             #st.image(uploaded_file, width=50)
             st.write('''

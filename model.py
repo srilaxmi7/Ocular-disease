@@ -1,7 +1,7 @@
-from tensorflow.keras import layers
-from tensorflow.keras import models
-import tensorflow_addons as tfa
-from tensorflow.keras.applications.vgg16 import VGG16
+from tensorflow import layers
+from tensorflow import models
+import tensorflow as tfa
+from tensorflow import VGG16
 
 
 #---------------------------------------------------
@@ -126,11 +126,5 @@ def compile_model_classif(model, out_shape):
                   metrics=[kappa])
     return model
 
-def preprocess_image(image):
-    # Preprocess your image here (resize, normalize, etc.)
-    return image  
-def predict(image):
-    processed_image = preprocess_image(image)
-    prediction = model.predict(processed_image)
-    return prediction
+
     
